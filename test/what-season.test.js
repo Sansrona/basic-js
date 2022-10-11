@@ -79,7 +79,7 @@ describe('What season', () => {
         it.optional('corretly handles argument absence', function () {
             const res = checkForNotThrowingErrors.call(this, [
                 () => getSeason()
-            ]);
+            ]); 
             assert.equal(res.includes(INCORRECT_RESULT_MSG), false);
             assert.equal(getSeason(), 'Unable to determine the time of year!');
         });
