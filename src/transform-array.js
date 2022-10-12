@@ -15,48 +15,17 @@ const { NotImplementedError } = require('../extensions/index.js');
  */
 function transform(arr) {
   if (!Array.isArray(arr)) throw new Error("'arr' parameter must be an instance of the Array!")
-  let newArr = [...arr];
-  let last = newArr.length - 1;
-  for (let i = 0; i < newArr.length; i++) {
-    switch (newArr[i]) {
-      case '--discard-prev': i === 0 || i === last ? newArr.splice(i, 1) : newArr.splice(--i, 2);continue;
-      case '--double-next':  i === last ? newArr.splice(i, 1) : newArr.splice(i, 1, arr[++i]);continue
-      case '--double-prev':  i === 0 || i === last ? newArr.splice(i, 1) : newArr.splice(i, 1, arr[--i]);continue;
-      case '--discard-next': if(newArr[i+2] ==='--double-prev' || newArr[i+2]==='--discard-prev') {newArr.splice(i, 3);continue} i === last ? newArr.splice(i, 1) : newArr.splice(i, 2);  continue;
-      default: continue;
+  let newArr = [];
+  let last = arr.length - 1;
+  for (let i = 0; i < arr.length; i++) {
+    switch (arr[i]) {
+      case "--discard-next": if (arr[i + 2] === '--double-prev' || arr[i + 2] === '--discard-prev') { i += 2; break; } i++; break;
+      case "--discard-prev": newArr.pop(); break;
+      case "--double-next": if (i < last) { newArr.push(arr[i + 1]); } break;
+      case "--double-prev": if (i > 0) { newArr.push(arr[i - 1]); } break;
+      default: newArr.push(arr[i]); break;
     }
   }
-  // for (let i = 0; i < newArr.length; i++) {
-  //   switch (newArr[i]) {
-  //     case '--discard-prev':
-  //       if (i > 0) {
-  //         newArr.splice(i - 1, 1);
-  //         i--;
-  //       }
-  //       isCommand = true;
-  //       break;
-  //     case '--double-next':
-  //       if (i < newArr.length - 1) newArr.splice(i + 1, 0, arr[i + 1]);
-  //       isCommand = true;
-  //       break;
-  //     case '--double-prev':
-  //       if (i > 0) {
-  //         newArr.splice(i - 1, 0, arr[i - 1]);
-  //         i++;
-  //       }
-  //       isCommand = true;
-  //       break;
-  //     case '--discard-next':
-  //       if (i < arr.length - 1) newArr.splice(i + 1, 1);
-  //       isCommand = true;
-  //       break;
-  //   }
-  //   if (isCommand) {
-  //     newArr.splice(i, 1);
-  //     i--;
-  //     isCommand = false;
-  //   }
-  // }
   return newArr;
 }
 
