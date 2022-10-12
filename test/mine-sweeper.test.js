@@ -10,7 +10,7 @@ describe('Minesweeper', () => {
   it.optional('should return minesweeper game setup', () => {
     assert.deepEqual(
       minesweeper([
-        [false, false, false],
+        [true, false, false],
         [false, true, false],
         [false, false, false],
       ]),
